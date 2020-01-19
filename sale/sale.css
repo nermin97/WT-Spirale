@@ -1,0 +1,134 @@
+
+html,body { 
+    height:100%; 
+    margin: 8px;
+}
+
+.meni ul {
+    position: absolute;
+    bottom: 0;
+
+}
+
+.meni ul li a {
+    color: black;
+    font-family: 'Times New Roman';
+}
+
+.unActiveTab {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.logo {
+    position: inherit;
+    display: inline-block;
+    background: url('../logo.png') no-repeat center center;
+    background-size: cover;
+    height: 60px;
+    width: 70px;
+    margin-top: -50%;
+    top: 10px;
+}
+
+.sadrzaj {
+    margin-top: 10px;
+    background-color: rgb(34, 135, 175);
+    text-align: center;
+    overflow: auto;
+    min-block-size: -webkit-fill-available;
+}
+
+.tabelaSala {
+    position: inherit;
+    border-spacing: 10px;
+    border-collapse: collapse;
+    margin: 0 auto;
+    height: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+}
+
+.headerSprat {
+    font-family: 'Times New Roman';
+    background-color: rgb(136, 133, 133);
+    border: 0.016px solid rgb(175, 171, 171);
+    padding: 20px 10px 20px 30px;
+    font-weight: bold;
+    font-size: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.headerRedni {
+    font-family: 'Times New Roman';
+    background-color: rgb(182, 175, 175);
+    padding: 15px;
+    text-align: left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sala {
+    border: 0.016px solid black;
+    padding: 0 10px 20px 10px;
+    background-color: white;
+    min-width: 56px;
+    min-height: 48px;
+    font-family: 'Times New Roman';
+}
+
+.vanCentriranje {
+    padding: 0 30px 20px 0;
+}
+
+.redniBrojCentriranje {
+    padding: 30px 15px 0 15px;
+}
+
+.slobodnaSala {
+    background-color: rgb(21, 202, 21);
+}
+
+.zauzetaSala {
+    background-color: rgb(216, 39, 39);
+}
+
+.kancelarija {
+    background-color: rgb(151, 129, 129);
+    border: none;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .meni {
+        margin-top: 30px;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 80px;
+        text-align: center;
+    }
+
+    .meni ul li {
+        display: inline;
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .mobileScreen {
+        display: none;
+    }
+
+    .meni {
+        margin-top: 30px;
+        padding: 0;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 180px;
+        text-align: center;
+    }
+    
+    .meni ul li {
+        display: block;
+    }
+} 

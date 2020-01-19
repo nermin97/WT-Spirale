@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <TITLE>Rezervacije</TITLE>
+        <link rel="stylesheet" type="text/css" href="rezervacije.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </HEAD>
+    <BODY>
+        <div class="meni">
+            <div class="logo"></div>
+            <ul>
+                <li class="unActiveTab"><a href="http://localhost:8080/Pocetna/">Pocetna</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Sale/">Sale</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Unos/">Unos</a></li>
+                <li><a>Rezervacije</a></li>
+                <li class="unActiveTab"><a>Osobe</a></li>
+            </ul>
+        </div>
+        <div class="sadrzaj">
+            <select id="select-sala" name="sala" class="customSelect">
+                <option value="0">Izaberite salu</option>
+                <option value="1">0-01</option>
+                <option value="2">0-02</option>
+                <option value="3">0-03</option>
+                <option value="4">0-04</option>
+                <option value="5">0-05</option>
+                <option value="6">0-06</option>
+                <option value="7">0-07</option>
+                <option value="8">0-08</option>
+                <option value="9">0-09</option>
+                <option value="1">1-01</option>
+                <option value="2">1-02</option>
+                <option value="3">1-03</option>
+                <option value="4">1-04</option>
+                <option value="5">1-05</option>
+                <option value="6">1-06</option>
+                <option value="7">1-07</option>
+                <option value="8">1-08</option>
+                <option value="9">1-09</option>
+                <option value="9">VA1</option>
+                <option value="9">VA2</option>
+                <option value="9">MA</option>
+                <option value="9">EE1</option>
+                <option value="9">EE2</option>
+            </select>
+            <label class="checkboxStil">
+                <input name="periodicna" type="checkbox" >
+                Periodicna
+            </label>
+            <br>
+            <label class="vrijeme">Pocetak:</label>
+            <input id="vrijeme-pocetka" name="pocetak" type="time" value="06:00">
+            <label class="vrijeme" >Kraj:</label>
+            <input id="vrijeme-kraja" name="kraj" type="time" value="23:00">
+
+            <div class="kalendar">
+                <div class="card">
+                    <h3 class="card-header" id="monthAndYear"></h3>
+                    <table class="table table-bordered" id="calendar">
+                        <thead id="calendar-head">
+                            <tr id="dani">
+                                <th>PON</th>
+                                <th>UTO</th>
+                                <th>SRI</th>
+                                <th>CET</th>
+                                <th>PET</th>
+                                <th>SUB</th>
+                                <th>NED</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody id="tijelo-kalendara">
+            
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="btn prethodni" id="previous" onclick="prethodni()">Prethodni</button>
+
+                <button class="btn sljedeci" id="next" onclick="sljedeci()">Sljedeci</button>
+            </div>
+
+            <div class="kalendarWeek">
+                <div class="card">
+                    <h3 class="card-header" id="monthAndYear-week">Novembar</h3>
+                    <table class="table table-bordered" id="calendar">
+                    
+                        <tbody id="calendar-body-week">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            
+                <a class="prethodni round" id="prethodni-week" onclick="previousWeek()">&#8249;</a>
+    
+                <a class="sljedeci round" id="sljedeci-week" onclick="nextWeek()">&#8250;</a>
+            </div>
+            
+        </div>
+        <script src="kalendar.js"></script>
+        <script src="../pozivi.js"></script>
+        <!-- <script src="kalendarSedmica.js"></script> -->
+        <script src="rezervacije.js"></script>
+    </BODY>
+</HTML>

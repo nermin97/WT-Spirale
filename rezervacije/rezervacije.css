@@ -1,0 +1,263 @@
+html,body { 
+    height:100%;
+    margin: 8px;
+}
+
+.meni ul {
+    position: absolute;
+    bottom: 0;
+
+}
+
+.meni ul li a {
+    color: black;
+    font-family: 'Times New Roman';
+}
+
+.unActiveTab {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.logo {
+    position: inherit;
+    display: inline-block;
+    background: url('../logo.png') no-repeat center center;
+    background-size: cover;
+    height: 60px;
+    width: 70px;
+    margin-top: -50%;
+    top: 10px;
+}
+
+.sadrzaj {
+    margin-top: 10px;
+    background-color: rgb(34, 135, 175);
+    text-align: center;
+    overflow: auto;
+    min-block-size: -webkit-fill-available;
+    font-family: 'Times New Roman';
+}
+
+.customSelect {
+    height: 25px;
+    margin: 10px auto;
+    background-color: #B0C4DD;
+}
+
+.checkboxStil {
+    width: 150px;
+    height: 25px;
+    border: 0.016px solid gray;
+    margin: 10px auto;
+    background-color: #B0C4DD;
+    box-shadow: 5px 5px 10px 5px rgba(172, 25, 25, 0.2), 0 6px 20px 0 rgba(197, 112, 42, 0.19);
+}
+
+.checkboxStil input {
+    margin-right: 5px auto;
+}
+
+.vrijeme {
+    margin: 5px auto;
+    width: 70px;
+}
+
+input[name='pocetak'], input[name='kraj'] {
+    background-color: #B0C4DD;
+    margin: 5px auto;
+}
+
+#osvjeziZauzeca {
+    display: block;
+    margin: 5px auto;
+    background-color: #587eb3;
+}
+
+#osvjeziZauzeca:hover {
+    background-color: rgb(100, 141, 143);
+}
+
+.kalendar, .kalendarWeek {
+    margin: 20px auto;
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+    overflow: auto;
+    min-block-size: -webkit-fill-available;
+    grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+}
+
+.kalendar .card, .kalendarWeek .card {
+    background-color: #B0C4DD;
+    border: 2px solid rgb(45, 45, 102);
+    height: 430px;
+    min-width: 180px;
+}
+
+
+#calendar {
+    border-collapse: inherit;
+    border-spacing: 10px;
+    border: none;
+}
+
+
+#tijelo-kalendara tr td, #calendar-body-week tr td, #dani th {
+    border: 2px solid rgb(45, 45, 102);
+    width: 60px;
+    height: 30px;
+    padding: 0;
+}
+
+#tijelo-kalendara tr td td, #calendar-body-week tr td td {
+    border: none;
+    border-top: 2px solid rgb(45, 45, 102);
+    display: grid;
+    padding: 0;
+    width: 60px;
+    height: 15px;
+}
+
+.zauzeta td {
+    background-color: red;
+}
+
+.slobodna td {
+    background-color: greenyellow;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .meni {
+        margin-top: 30px;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 80px;
+        text-align: center;
+    }
+
+    .meni ul li {
+        display: inline;
+        margin-left: 10px;
+    }
+
+    .kalendarWeek {
+        display: none;
+    }
+
+    #monthAndYear {
+        text-align: left; 
+        font-size: 20px;
+        font-family: 'Times New Roman';
+        font-weight: bold;
+    }
+
+    .customSelect {
+        width: 200px;
+    }
+
+    .checkboxStil {
+        display: inline-block;
+    }
+
+    .vrijeme {
+        text-align: left;
+    }
+
+    input[name='pocetak'], input[name='kraj'] {
+        display: inline-block;
+        width: 110px;
+    }
+    
+    .prethodni {
+        margin-left: 10px;
+        margin-top: 20px;
+        float: left;
+        width: 100px;
+        background-color: rgb(139, 123, 123);
+        box-shadow: 5px 5px 5px 5px rgba(172, 25, 25, 0.2), 0 6px 20px 0 rgba(197, 112, 42, 0.19);
+    }
+    
+    
+    .sljedeci {
+        margin-right: 10px;
+        margin-top: 20px;
+        float: right;
+        width: 100px;
+        background-color: rgb(100, 141, 143);
+        box-shadow: 5px 5px 5px 5px rgba(172, 25, 25, 0.2), 0 6px 20px 0 rgba(197, 112, 42, 0.19);
+    }
+}
+
+@media only screen and (max-width: 599px) {
+
+    .meni {
+        margin-top: 30px;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 180px;
+        text-align: center;
+    }
+
+    .meni ul li {
+        display: block;
+    }
+
+    .kalendar {
+        display: none;
+    }
+
+    #monthAndYear-week {
+        text-align: left; 
+        font-size: 20px;
+        font-family: 'Times New Roman';
+        font-weight: bold;
+    }
+
+    #prethodni-week, #sljedeci-week {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+      
+    .prethodni {
+        background-color: rgb(139, 123, 123);
+        float: left;
+        margin-left: 5px;
+        margin-top: 10px;
+    }
+      
+    .sljedeci {
+        background-color: rgb(100, 141, 143);
+        float: right;
+        margin-right: 5px;
+        margin-top: 10px;
+    }
+    
+    .round {
+        border-radius: 50%;
+    }
+
+    .customSelect {
+        width: 150px;
+    }
+
+    .checkboxStil {
+        display: block;
+    }
+
+    .vrijeme {
+        width: 100px;
+        display: block;
+        text-align: center;
+    }
+
+    input[name='pocetak'], input[name='kraj'] {
+        display: block;
+        width: 150px;
+        text-align: center;
+        margin: 5px a;
+    }
+}

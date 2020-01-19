@@ -1,0 +1,101 @@
+{
+  "periodicna": [
+    {
+      "dan": "1",
+      "semestar": "zimski",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "dan": "5",
+      "semestar": "zimski",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "dan": "3",
+      "semestar": "ljetni",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "dan": "0",
+      "semestar": "ljetni",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    }
+  ],
+  "vanredna": [
+    {
+      "datum": "02.01.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "15.01.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "04.02.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "18.03.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "18.04.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "26.05.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "06.05.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "09.05.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    },
+    {
+      "datum": "23.05.2020",
+      "pocetak": "06:00",
+      "kraj": "23:00",
+      "naziv": "0-01",
+      "predavac": "Predavac"
+    }
+  ]
+}

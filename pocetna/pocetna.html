@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <TITLE>Pocetna</TITLE>
+        <link rel="stylesheet" type="text/css" href="pocetna.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </HEAD>
+    <BODY>
+        <div class="meni">
+            <div class="logo"></div>
+            <ul>
+                <li><a>Pocetna</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Sale/">Sale</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Unos/">Unos</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Rezervacije/">Rezervacije</a></li>
+                <li class="unActiveTab"><a >Osobe</a></li>
+            </ul>
+        </div>
+        <div class="sadrzaj" id="sadrzaj">
+            
+            <img style="display: none;" class="imageStyle" src="https://www.w3schools.com/images/picture.jpg">
+            <img style="display: none;" class="imageStyle" src="https://www.w3schools.com/images/picture.jpg">
+            <img style="display: none;" class="imageStyle" src="https://www.w3schools.com/images/picture.jpg">
+            
+            <!-- <img class="imageStyle" src="../images/aurelionSol.jpg">
+            <img class="imageStyle" src="../images/fiora.jpg">
+            <img class="imageStyle" src="../images/heimer.jpg">
+            <img class="imageStyle" src="../images/katarina.jpeg">
+            <img class="imageStyle" src="../images/rakan.jpg">
+            <img class="imageStyle" src="../images/sylas.jpg">
+            <img class="imageStyle" src="../images/vayne.jpg">
+            <img class="imageStyle" src="../images/warwick.jpg">
+            <img class="imageStyle" src="../images/yuumi.jpg">
+            <img class="imageStyle" src="../images/zed.jpg"> -->
+            
+        </div>
+        <div style="text-align: -webkit-right; background-color: rgb(34, 135, 175);">
+            <button style="float: left;;" class="btn prethodna" id="prethodna" onclick="prethodna()">Prethodna</button>
+            <button style=" display: inline;" class="btn sljedeca" id="sljedeca" onclick="sljedeca()">Sljedeca</button>
+        </div>
+        
+        <script src="../pozivi.js"></script>
+        <script src="pocetna.js"></script>
+    </BODY>
+</HTML>

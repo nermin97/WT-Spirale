@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <TITLE>Unos</TITLE>
+        <link rel="stylesheet" type="text/css" href="unos.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    </HEAD>
+    <BODY>
+        <div class="meni">
+            <div class="logo"></div>
+            <ul>
+                <li class="unActiveTab"><a href="http://localhost:8080/Pocetna/">Pocetna</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Sale/">Sale</a></li>
+                <li><a>Unos</a></li>
+                <li class="unActiveTab"><a href="http://localhost:8080/Rezervacije/">Rezervacije</a></li>
+                <li class="unActiveTab"><a>Osobe</a></li>
+            </ul>
+        </div>
+        <div class="sadrzaj">
+            <form>
+                <label>Naziv:</label>
+                <input name="naziv" type="text" class="inputWidth">
+                <br>
+                <label>Broj mjesta:</label>
+                <input name="brojMjesta" type="number" class="inputWidth">
+                <br>
+                <label>Odgovorna ososba:</label>
+                <input name="odgovornaOsoba" type="email" class="inputWidth">
+                <br>
+                <label>Sprat:</label>
+                <input name="sprat" type="text" class="inputWidth">
+                <br><br>
+                <input name="unos" type="submit">
+            </form>
+        </div>
+        <script src="unos.js"></script>
+    </BODY>
+</HTML>
