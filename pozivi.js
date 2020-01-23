@@ -65,18 +65,13 @@ let Pozivi = (function() {
             type: "GET",
             data: {},
             success: function (data, status, settings) {
+                skloniLoader();
                 Kalendar.ucitajPodatke(data.redovna, data.vanredna);
-                let loader = document.getElementById('loader');
-                loader.parentNode.removeChild(loader);
-                let kartica = document.getElementById('kartica');
-                kartica.style.display = 'flex';
             },
             error: function (ajaxrequest, ajaxOptions, thrownError) {
-                console.log(ajaxrequest.responseText);
-                let loader = document.getElementById('loader');
-                loader.parentNode.removeChild(loader);
-                let kartica = document.getElementById('kartica');
-                kartica.style.display = 'flex';
+                skloniLoader();
+                alert(ajaxrequest.responseText);
+                
             }
         });
     }
@@ -88,9 +83,11 @@ let Pozivi = (function() {
             data: {},
             success: function (data, status, settings) {
                 Kalendar.ucitajOsoblje(data);
+                Pozivi.dobaviZauzeca();
             },
             error: function (ajaxrequest, ajaxOptions, thrownError) {
-                console.log(ajaxrequest.responseText);
+                skloniLoader();
+                alert(ajaxrequest.responseText);
             }
         });
     }
@@ -102,12 +99,32 @@ let Pozivi = (function() {
             data: {},
             success: function (data, status, settings) {
                 Kalendar.ucitajSale(data);
-                osvjeziZauzeca();
+                Pozivi.dobaviOsoblje();
             },
             error: function (ajaxrequest, ajaxOptions, thrownError) {
-                console.log(ajaxrequest.responseText);
+                skloniLoader();
+                alert(ajaxrequest.responseText);
             }
         });
+    }
+
+    function posaljiRezervaciju(zauzece) {
+        prikaziLoader();
+        // Send data to server
+
+        $.ajax({
+            url: "/zauzeca",
+            type: "POST",
+            data: zauzece,
+            success: function (data, status, settings) {
+                Pozivi.dobaviSale();;
+            },
+            error: function (ajaxrequest, ajaxOptions, thrownError) {
+                if (ajaxrequest.readyState == 4) alert(ajaxrequest.responseText)
+                console.log(ajaxrequest.responseText);
+                skloniLoader();
+            }
+        })
     }
 
     function rezervisiZauzeceImpl(event) {
@@ -178,31 +195,7 @@ let Pozivi = (function() {
             }
 
             if (mozeSeRezervisati(zauzece)){
-                let kalendarDiv = document.getElementById('kalendarDiv');
-                let loader = document.createElement('div');
-                let kartica = document.getElementById('kartica');
-                kartica.style.display = 'none';
-                loader.setAttribute('id', 'loader');
-                kalendarDiv.appendChild(loader);
-                loader.style.margin = 'auto';
-                // Send data to server
-
-                $.ajax({
-                    url: "/zauzeca",
-                    type: "POST",
-                    data: zauzece,
-                    success: function (data, status, settings) {
-                        dobaviZauzecaImpl();
-                    },
-                    error: function (ajaxrequest, ajaxOptions, thrownError) {
-                        if (ajaxrequest.readyState == 4) alert(ajaxrequest.responseText)
-                        console.log(ajaxrequest.responseText);
-                        let loader = document.getElementById('loader');
-                        loader.parentNode.removeChild(loader);
-                        let kartica = document.getElementById('kartica');
-                        kartica.style.display = 'flex';
-                    }
-                })
+                posaljiRezervaciju(zauzece);
             } 
         }
     }
@@ -306,3 +299,22 @@ let Pozivi = (function() {
         rezervisiZauzece: rezervisiZauzeceImpl
     }
 } ());
+
+
+
+function skloniLoader() {
+    let loader = document.getElementById('loader');
+    loader.parentNode.removeChild(loader);
+    let kartica = document.getElementById('kartica');
+    kartica.style.display = 'flex';
+}
+
+function prikaziLoader() {
+    let kalendarDiv = document.getElementById('kalendarDiv');
+    let loader = document.createElement('div');
+    let kartica = document.getElementById('kartica');
+    kartica.style.display = 'none';
+    loader.setAttribute('id', 'loader');
+    kalendarDiv.appendChild(loader);
+    loader.style.margin = 'auto';
+}

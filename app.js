@@ -270,8 +270,12 @@ app.post('/zauzeca', (req, res) => {
         res.status(400).send(new Error('Vrijeme pocetka ne moze biti vece od vremena kraja!'));
         return;
     }
+
+    rezervacija.termin.pocetak = rezervacija.termin.pocetak + ':00';
+    rezervacija.termin.kraj = rezervacija.termin.kraj + ':00';
     rezervacija.termin.dan = (rezervacija.termin.dan == '') ? null : parseInt(rezervacija.termin.dan);
     rezervacija.termin.redovni = (rezervacija.termin.redovni == true) || (rezervacija.termin.redovni == 'true');
+    
     let promises = [];
     db.osoblje.findAll().then(osobljeLista => {
         osobljeLista.forEach(osoba => {
