@@ -8,5 +8,5 @@ function prethodna() {
 }
 
 window.onload = function () {
-    Pozivi.ucitajSlike();
+    Pozivi.dobaviSlike();
 }

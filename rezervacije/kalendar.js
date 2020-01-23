@@ -1,8 +1,8 @@
+
 let Kalendar = (function() {
     const LJETNI = "ljetni";
     const ZIMSKI = "zimski";
-    const DEFAULT_IZBOR = "Izaberite salu";
-    var periodicnaZauzeca = null;
+    var redovnaZauzeca = null;
     var vanrednaZauzeca = null;
     tijeloKalendara = document.getElementById("tijelo-kalendara");
     const ZIMSKI_SEMESTAR = [9, 10, 11, 0];
@@ -12,6 +12,8 @@ let Kalendar = (function() {
     let trenutniMjesec = danas.getMonth();
     const IMENA_MJESECI = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"];
     let monthAndYear = document.getElementById("monthAndYear");
+    let listaOsoblja;
+    let listaSala;
 
     function obojiZauzecaImpl(kalendarRef, mjesec, sala, pocetak, kraj) {
         // Provjera podataka
@@ -53,17 +55,6 @@ let Kalendar = (function() {
                             element.classList.remove('slobodna');
                             element.classList.add('zauzeta');
                         }
-                        /* if ((zauzece instanceof Periodicno && dajSemestar(zauzece.semestar).includes(mjesec) && j == zauzece.dan)
-                            || (zauzece instanceof Vanredno && dajDatum(zauzece.datum).getDate() == parseInt(element.innerText))) {
-                            element.classList.remove('slobodna');
-                            element.classList.add('zauzeta');
-                        }
-                        if ((pocetak <= zauzece.pocetak && kraj >= zauzece.kraj) 
-                            || (zauzece.pocetak <= pocetak && zauzece.kraj> pocetak) 
-                            || (zauzece.pocetak < kraj && zauzece.kraj >= kraj )) { 
-                            // Periodicno ili Vanredno?
-                            
-                        } */
                     })  
                 }
             }
@@ -73,10 +64,10 @@ let Kalendar = (function() {
 
     function ucitajPodatkeImpl(redovna, vanredna){
         try {
-            periodicnaZauzeca = new Array();
+            redovnaZauzeca = new Array();
             if (redovna != null) {
                 redovna.forEach(element => {
-                    periodicnaZauzeca.push(new Periodicno(element.dan, element.semestar, element.pocetak,
+                    redovnaZauzeca.push(new Periodicno(element.dan, element.semestar, element.pocetak,
                                                         element.kraj, element.naziv, element.predavac))
                 });
             }
@@ -89,7 +80,7 @@ let Kalendar = (function() {
             }
             osvjeziZauzeca();
         } catch (error) {
-            periodicnaZauzeca = new Array();
+            redovnaZauzeca = new Array();
             vanrednaZauzeca = new Array();
             console.log(error);
         }
@@ -159,8 +150,8 @@ let Kalendar = (function() {
 
     function dajZauzecaPoSali(sala) {
         let zauzeca = new Array();
-        if (periodicnaZauzeca != null) {
-            periodicnaZauzeca.forEach(element => {
+        if (redovnaZauzeca != null) {
+            redovnaZauzeca.forEach(element => {
                 if(element.naziv == sala) {
                     zauzeca.push(element);
                 }
@@ -214,13 +205,58 @@ let Kalendar = (function() {
         return new Date(datumElementi[1] + '/' + datumElementi[0] + '/' + datumElementi[2]);
     }
 
+    function ucitajOsobljeImpl(osoblje) {
+        Kalendar.listaOsoblja = osoblje;
+        var osobljeSelect = document.getElementById('osoblje-select');
+        if (osobljeSelect.options.length > 0) {
+            for (let i = osobljeSelect.options.length - 1; i >= 0; i--) {
+                osobljeSelect.remove(i);
+            }
+        }
+        if (osoblje.length == 0) {
+            let option = document.createElement('option');
+            option.text = 'Trenutno nema osoblja!';
+            option.value = -1;
+            osobljeSelect.add(option);
+            return;
+        }
+        osoblje.forEach(osoba => {
+            let option = document.createElement('option');
+            option.text = osoba.ime + ' '  + osoba.prezime;
+            option.value = osoba.id;
+            osobljeSelect.add(option);
+        });
+    }
+
+    function ucitajSaleImpl(sale) {
+        Kalendar.listaSala = sale;
+        if (saleSelect.options.length > 0) {
+            for (let i = saleSelect.options.length - 1; i >= 0; i--) {
+                saleSelect.remove(i);
+            }
+        }
+        if (sale.length == 0) {
+            let option = document.createElement('option');
+            option.text = 'Izaberite salu';
+            option.value = -1;
+            saleSelect.add(option);
+            return;
+        }
+        sale.forEach(sala => {
+            let option = document.createElement('option');
+            option.text = sala.naziv;
+            option.value = sala.id;
+            saleSelect.add(option);
+        });
+    }
+
     return {
         obojiZauzeca: obojiZauzecaImpl,
         ucitajPodatke: ucitajPodatkeImpl,
         iscrtajKalendar: iscrtajKalendarImpl,
         dajZauzecaPoSali: dajZauzecaPoSali,
         danaUMjesecu: danaUMjesecu,
-        periodicnaZauzeca: periodicnaZauzeca,
+        redovnaZauzeca: redovnaZauzeca,
         vanrednaZauzeca: vanrednaZauzeca,
         danaUMjesecu: danaUMjesecu,
         trenutniMjesec: trenutniMjesec,
@@ -229,9 +265,12 @@ let Kalendar = (function() {
         LJETNI_SEMESTAR: LJETNI_SEMESTAR,
         ZIMSKI: ZIMSKI,
         LJETNI: LJETNI,
-        DEFAULT_IZBOR: DEFAULT_IZBOR,
         Periodicno: Periodicno,
-        Vanredno: Vanredno
+        Vanredno: Vanredno,
+        ucitajOsoblje: ucitajOsobljeImpl,
+        ucitajSale: ucitajSaleImpl,
+        listaOsoblja: listaOsoblja,
+        listaSala: listaSala
     }
 } ());
 
@@ -251,8 +290,10 @@ function prethodni() {
 
 function osvjeziZauzeca() {
     let salaElement = document.getElementsByName("sala")[0];
+    if (salaElement.options.length == 0 || salaElement.options[salaElement.selectedIndex].value == -1) {
+        return;
+    }
     let sala = salaElement.options[salaElement.selectedIndex].text;
-    if (sala == Kalendar.DEFAULT_IZBOR) return;
     let pocetak = document.getElementsByName("pocetak")[0].value;
     let elementKraj = document.getElementsByName("kraj")[0];
     let kraj = elementKraj.value;
@@ -274,6 +315,8 @@ function osvjeziZauzeca() {
 
     Kalendar.obojiZauzeca(tijeloKalendara, Kalendar.trenutniMjesec, sala, pocetak, kraj);
 }
+
+var saleSelect = document.getElementById('select-sala');
 
 document.getElementById('select-sala').addEventListener('change', osvjeziZauzeca);
 document.getElementById('vrijeme-pocetka').addEventListener('input', osvjeziZauzeca);

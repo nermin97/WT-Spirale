@@ -1,0 +1,88 @@
+html,body { 
+    height:100%; 
+    margin: 8px;
+}
+
+.meni ul {
+    position: absolute;
+    bottom: 0;
+
+}
+
+.meni ul li a {
+    color: black;
+    font-family: 'Times New Roman';
+}
+
+.unActiveTab {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.activeTab {
+    text-decoration: none;
+}
+
+.logo {
+    position: inherit;
+    display: inline-block;
+    background: url('../logo.png') no-repeat center center;
+    background-size: cover;
+    height: 60px;
+    width: 70px;
+    margin-top: -50%;
+    top: 10px;
+}
+
+.sadrzaj {
+    margin-top: 10px;
+    background-color: rgb(34, 135, 175);
+    text-align: center;
+    overflow: auto;
+    min-block-size: -webkit-fill-available;
+}
+
+
+
+#sadrzaj ul {
+    margin-top: 15px;
+    margin: auto;
+    border-radius: 20px;
+    max-width: 700px;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .meni {
+        margin-top: 30px;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 80px;
+        text-align: center;
+    }
+
+    .meni ul li {
+        display: inline;
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (max-width: 599px) {
+
+    .meni {
+        margin-top: 30px;
+        position: relative;
+        background-color: rgb(34, 135, 175);
+        height: 180px;
+        text-align: center;
+    }
+
+    .meni ul li {
+        display: block;
+    }
+
+    .sadrzaj form label {
+        text-align: center;
+    }
+} 

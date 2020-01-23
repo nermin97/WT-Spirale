@@ -1,10 +1,10 @@
+
 let Pozivi = (function() {
 
-    const DEFAULT_PREDAVAC = "Predavac";
     var slike = [];
     var page = 0;
 
-    function ucitajSlikeImpl () {
+    function dobaviSlikeImpl () {
         $.ajax({
             url: "/Pocetna/slike",
             type: "GET",
@@ -14,7 +14,7 @@ let Pozivi = (function() {
                 ucitajStranicu()
             },
             error: function (ajaxrequest, ajaxOptions, thrownError) {
-              alert("Doslo je do greske tokom ucitavanja slika!");
+                console.log(ajaxrequest.responseText);
             }
         })
     }
@@ -59,36 +59,81 @@ let Pozivi = (function() {
         }
     }
 
-    function ucitajZauzecaImpl() {
+    function dobaviZauzecaImpl() {
         $.ajax({
-            url: "/Rezervacije/zauzeca",
+            url: "/zauzeca",
             type: "GET",
             data: {},
             success: function (data, status, settings) {
-                Kalendar.ucitajPodatke(data.periodicna, data.vanredna);
+                Kalendar.ucitajPodatke(data.redovna, data.vanredna);
+                let loader = document.getElementById('loader');
+                loader.parentNode.removeChild(loader);
+                let kartica = document.getElementById('kartica');
+                kartica.style.display = 'flex';
             },
             error: function (ajaxrequest, ajaxOptions, thrownError) {
-              alert("error");
+                console.log(ajaxrequest.responseText);
+                let loader = document.getElementById('loader');
+                loader.parentNode.removeChild(loader);
+                let kartica = document.getElementById('kartica');
+                kartica.style.display = 'flex';
             }
-        })
+        });
+    }
+
+    function dobaviOsobljeImpl() {
+        $.ajax({
+            url: '/Rezervacije/osoblje',
+            type: 'GET',
+            data: {},
+            success: function (data, status, settings) {
+                Kalendar.ucitajOsoblje(data);
+            },
+            error: function (ajaxrequest, ajaxOptions, thrownError) {
+                console.log(ajaxrequest.responseText);
+            }
+        });
+    }
+
+    function dobaviSaleImpl() {
+        $.ajax({
+            url: '/Rezervacije/sale',
+            type: 'GET',
+            data: {},
+            success: function (data, status, settings) {
+                Kalendar.ucitajSale(data);
+                osvjeziZauzeca();
+            },
+            error: function (ajaxrequest, ajaxOptions, thrownError) {
+                console.log(ajaxrequest.responseText);
+            }
+        });
     }
 
     function rezervisiZauzeceImpl(event) {
         if(confirm('Da li zelite rezervisati ovaj termin?')) {
 
             let salaElement = document.getElementsByName("sala")[0];
-            let sala = salaElement.options[salaElement.selectedIndex].text;
-            if (sala == Kalendar.DEFAULT_IZBOR) {
-                alert("Izaberite salu!");
+            let osobljeElement = document.getElementsByName('osoblje')[0];
+            if (salaElement.options[salaElement.selectedIndex].value == -1 || osobljeElement.options[osobljeElement.selectedIndex].value == -1) {
+                console.log("Greska!");
                 return;
             }
+            let sala = Kalendar.listaSala[salaElement.selectedIndex];
+            let osoba = Kalendar.listaOsoblja[osobljeElement.selectedIndex];
+            
             let checked = document.getElementsByName("periodicna")[0].checked;
             let pocetak = document.getElementsByName("pocetak")[0].value;
             let kraj = document.getElementsByName("kraj")[0].value;
             let celija = event.target;
-            console.log(celija.innerText + ' // ' + celija.cellIndex);
+            if (celija.children.length == 0 && celija.parentNode.tagName == 'TD') celija = celija.parentNode;
 
             let zauzece = null;
+            let osobljeSelect = document.getElementById('osoblje-select');
+            if (osobljeSelect.options.length == 0 || osobljeSelect.options[0].value == -1) {
+                alert("Trenutno nema osoblja!");
+                return;
+            }
             if (checked) {
                 let semestar = null;
                 if (Kalendar.LJETNI_SEMESTAR.includes(Kalendar.trenutniMjesec)) {
@@ -99,35 +144,63 @@ let Pozivi = (function() {
                     alert("Mjesec ne ulazi ni u jedan semestar!");
                     return;
                 } /* dan, semestar, pocetak, kraj, naziv, predavac */
-                zauzece = new Kalendar.Periodicno(celija.cellIndex, semestar, pocetak, kraj, sala, DEFAULT_PREDAVAC);
+                zauzece = {
+                    termin: {
+                        redovni: true,
+                        dan: celija.cellIndex,
+                        datum: null, 
+                        semestar: semestar,
+                        pocetak: pocetak,
+                        kraj: kraj
+                    }, 
+                    sala: sala,
+                    osoba: osoba
+                }
+                //zauzece = new Kalendar.Periodicno(celija.cellIndex, semestar, pocetak, kraj, sala, osobljeSelect.options[osobljeSelect.selectedIndex].value);
             } else { /* datum, pocetak, kraj, naziv, predavac */
                 let trenutniMjesec = parseInt(Kalendar.trenutniMjesec) + 1;
                 let datumDan = (celija.innerText.length == 1) ? '0' + celija.innerText : celija.innerText;
                 let datumMjesec = (trenutniMjesec < 10) ? '0' + trenutniMjesec : trenutniMjesec;
                 let datum =  datumDan + '.' + datumMjesec + '.' + Kalendar.trenutnaGodina;
-                zauzece = new Kalendar.Vanredno(datum, pocetak, kraj, sala, DEFAULT_PREDAVAC);
+                zauzece = {
+                    termin: {
+                        redovni: false,
+                        dan: null,
+                        datum: datum, 
+                        semestar: null,
+                        pocetak: pocetak,
+                        kraj: kraj
+                    }, 
+                    sala: sala,
+                    osoba: osoba
+                }
+                //zauzece = new Kalendar.Vanredno(datum, pocetak, kraj, sala, osobljeSelect.options[osobljeSelect.selectedIndex].value);
             }
 
             if (mozeSeRezervisati(zauzece)){
-                let data = {};
-                if (zauzece instanceof Kalendar.Periodicno) {
-                    data = { periodicno: zauzece };
-                } else {
-                    data = { vanredno: zauzece };
-                }
+                let kalendarDiv = document.getElementById('kalendarDiv');
+                let loader = document.createElement('div');
+                let kartica = document.getElementById('kartica');
+                kartica.style.display = 'none';
+                loader.setAttribute('id', 'loader');
+                kalendarDiv.appendChild(loader);
+                loader.style.margin = 'auto';
                 // Send data to server
+
                 $.ajax({
-                    url: "/Rezervacije/zauzeca",
+                    url: "/zauzeca",
                     type: "POST",
-                    data: data,
+                    data: zauzece,
                     success: function (data, status, settings) {
-                        if (settings.readyState != 4) {
-                            alert(data);
-                        }
-                        ucitajZauzecaImpl();
+                        dobaviZauzecaImpl();
                     },
                     error: function (ajaxrequest, ajaxOptions, thrownError) {
-                        alert("error");
+                        if (ajaxrequest.readyState == 4) alert(ajaxrequest.responseText)
+                        console.log(ajaxrequest.responseText);
+                        let loader = document.getElementById('loader');
+                        loader.parentNode.removeChild(loader);
+                        let kartica = document.getElementById('kartica');
+                        kartica.style.display = 'flex';
                     }
                 })
             } 
@@ -136,22 +209,22 @@ let Pozivi = (function() {
 
     function mozeSeRezervisati(zauzece) {
         let BreakException = {};
-        let zauzeca = Kalendar.dajZauzecaPoSali(zauzece.naziv);
+        let zauzeca = Kalendar.dajZauzecaPoSali(zauzece.sala.naziv);
         if (zauzeca != null && zauzeca.length > 0) {
             try {
                 zauzeca.forEach(element => {
-                    let preklapanjeUSatima = ((element.pocetak <= zauzece.pocetak && element.kraj >= zauzece.kraj) 
-                                            || (zauzece.pocetak <= element.pocetak && zauzece.kraj > element.pocetak) 
-                                            || (zauzece.pocetak < element.kraj && zauzece.kraj >= element.kraj));
+                    let preklapanjeUSatima = ((element.pocetak <= zauzece.termin.pocetak && element.kraj >= zauzece.termin.kraj) 
+                                            || (zauzece.termin.pocetak <= element.pocetak && zauzece.termin.kraj > element.pocetak) 
+                                            || (zauzece.termin.pocetak < element.kraj && zauzece.termin.kraj >= element.kraj));
                     if (element instanceof Kalendar.Periodicno) {
-                        if (zauzece instanceof Kalendar.Periodicno) { // Ako su oba periodicna
-                            if (element.semestar == zauzece.semestar && element.dan == zauzece.dan && preklapanjeUSatima) {
+                        if (zauzece.termin.redovni) { // Ako su oba redovna
+                            if (element.semestar == zauzece.termin.semestar && element.dan == zauzece.termin.dan && preklapanjeUSatima) {
                                 alert("Preklapanje termina sa postojecim periodicnim zauzecem!");
                                 throw BreakException;
                             }
                         } else { // Ako je element Periodicno a zeli se rezervisati Vanredno zauzece
                             let semestarElement = (element.semestar == Kalendar.ZIMSKI) ? Kalendar.ZIMSKI_SEMESTAR : Kalendar.LJETNI_SEMESTAR;
-                            let datumElementi = zauzece.datum.split('.');
+                            let datumElementi = zauzece.termin.datum.split('.');
                             let datum = new Date(datumElementi[1] + '/' + datumElementi[0] + '/' + datumElementi[2]);
                             let danUSedmici = datum.getDay() - 1;
                             if (danUSedmici < 0) danUSedmici += 7;
@@ -162,19 +235,19 @@ let Pozivi = (function() {
                             }
                         }
                     } else {
-                        if (zauzece instanceof Kalendar.Periodicno) { // Ako je elementVanredno a zeli se rezervisati periodicno
-                            let semestarZauzece = (zauzece.semestar == Kalendar.ZIMSKI) ? Kalendar.ZIMSKI_SEMESTAR : Kalendar.LJETNI_SEMESTAR;
+                        if (zauzece.termin.redovni) { // Ako je elementVanredno a zeli se rezervisati periodicno
+                            let semestarZauzece = (zauzece.termin.semestar == Kalendar.ZIMSKI) ? Kalendar.ZIMSKI_SEMESTAR : Kalendar.LJETNI_SEMESTAR;
                             let datumElementi = element.datum.split('.');
                             let datum = new Date(datumElementi[1] + '/' + datumElementi[0] + '/' + datumElementi[2]);
                             let danUSedmici = datum.getDay() - 1;
                             if (danUSedmici < 0) prviDan += 7;
     
-                            if (semestarZauzece.includes(parseInt(datumElementi[1]) - 1) && danUSedmici == zauzece.dan && preklapanjeUSatima) {
+                            if (semestarZauzece.includes(parseInt(datumElementi[1]) - 1) && danUSedmici == zauzece.termin.dan && preklapanjeUSatima) {
                                 alert("Preklapanje termina sa postojecim vanrednim zauzecem!");
                                 throw BreakException;
                             }
                         } else { // Ako su oba vanredna
-                            if (element.datum == zauzece.datum && preklapanjeUSatima) {
+                            if (element.datum == zauzece.termin.datum && preklapanjeUSatima) {
                                 alert("Preklapanje termina sa postojecim vanrednim zauzecem!")
                                 throw BreakException;
                             }
@@ -186,14 +259,50 @@ let Pozivi = (function() {
                 return false;
             }
         }
-        return true;;
+        return true;
+    }
+
+    function dobaviOsobeLokacijeImpl() {
+        $.ajax({
+            url: '/osoblje',
+            type: 'GET',
+            data: {},
+            success: function (data, status, settings) {
+                let lista = document.getElementById('lista-osoba');
+                if (lista.children.length > 0) lista.innerHTML = '';
+                if (data.length == 0) {
+                    let item = document.createElement('li');
+                    let text = document.createTextNode('Prazno!')
+                    item.appendChild(text);
+                    lista.appendChild(item);
+                }
+                data.forEach(element => {
+                    let item = document.createElement('li');
+                    let text;
+                    if (element.trenutnaSala == null && element.trenutniTermin == null) {
+                        text = document.createTextNode(element.osoba.ime + ' ' + element.osoba.prezime + ' se nalazi u svojoj kancelariji');
+                    }
+                    else {
+                        text = document.createTextNode(element.osoba.ime + ' ' + element.osoba.prezime + ' se nalazi u Sali: ' + element.trenutnaSala.naziv + ' do ' + element.trenutniTermin.kraj + 'h');
+                    } 
+                    item.appendChild(text);
+                    lista.appendChild(item);
+                });
+            },
+            error: function (ajaxrequest, ajaxOptions, thrownError) {
+              console.log("Error kod /Osobe/osobe get");
+            }
+        });
     }
 
     return {
-        ucitajSlike: ucitajSlikeImpl,
+        dobaviSlike: dobaviSlikeImpl,
+        dobaviOsoblje: dobaviOsobljeImpl,
+        dobaviSale: dobaviSaleImpl,
+        dobaviOsobeLokacije: dobaviOsobeLokacijeImpl,
         sljedeca: sljedecaImpl,
         prethodna: prethodnaImpl,
-        ucitajZauzeca: ucitajZauzecaImpl,
+        dobaviZauzeca: dobaviZauzecaImpl,
         rezervisiZauzece: rezervisiZauzeceImpl
     }
 } ());

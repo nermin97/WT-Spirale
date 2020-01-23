@@ -127,6 +127,14 @@ input[name='pocetak'], input[name='kraj'] {
     background-color: greenyellow;
 }
 
+.osoblje{
+    width: 300px;
+    display: block;
+    height: 25px;
+    margin: 10px auto;
+    background-color: #B0C4DD;
+}
+
 
 @media only screen and (min-width: 600px) {
     .meni {
@@ -144,6 +152,9 @@ input[name='pocetak'], input[name='kraj'] {
 
     .kalendarWeek {
         display: none;
+    }
+    .kalendar {
+        display: inline-table;
     }
 
     #monthAndYear {
@@ -203,7 +214,6 @@ input[name='pocetak'], input[name='kraj'] {
     .meni ul li {
         display: block;
     }
-
     .kalendar {
         display: none;
     }
