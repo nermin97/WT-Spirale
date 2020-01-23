@@ -1,7 +1,5 @@
 # wt1917825
 
-# wt1917825
-
 ## Postavka:
 ### https://drive.google.com/file/d/11ZXywyvygYt1Hqc3Dz7X8wOCAYWMBfSr/view?usp=sharing
 ### https://drive.google.com/file/d/1eOym4-T7IZFY1afZuDZGCzItC1i8kCal/view?usp=sharing
