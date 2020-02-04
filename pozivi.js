@@ -160,7 +160,7 @@ let Pozivi = (function() {
                 } else {
                     alert("Mjesec ne ulazi ni u jedan semestar!");
                     return;
-                } /* dan, semestar, pocetak, kraj, naziv, predavac */
+                } 
                 zauzece = {
                     termin: {
                         redovni: true,
@@ -173,8 +173,7 @@ let Pozivi = (function() {
                     sala: sala,
                     osoba: osoba
                 }
-                //zauzece = new Kalendar.Periodicno(celija.cellIndex, semestar, pocetak, kraj, sala, osobljeSelect.options[osobljeSelect.selectedIndex].value);
-            } else { /* datum, pocetak, kraj, naziv, predavac */
+            } else {
                 let trenutniMjesec = parseInt(Kalendar.trenutniMjesec) + 1;
                 let datumDan = (celija.innerText.length == 1) ? '0' + celija.innerText : celija.innerText;
                 let datumMjesec = (trenutniMjesec < 10) ? '0' + trenutniMjesec : trenutniMjesec;
@@ -191,7 +190,6 @@ let Pozivi = (function() {
                     sala: sala,
                     osoba: osoba
                 }
-                //zauzece = new Kalendar.Vanredno(datum, pocetak, kraj, sala, osobljeSelect.options[osobljeSelect.selectedIndex].value);
             }
 
             if (mozeSeRezervisati(zauzece)){

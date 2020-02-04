@@ -7,6 +7,9 @@
 ### https://drive.google.com/file/d/1amEX0S5s912DMFrkYmUNoRySh1VVt9Go/view?usp=sharing
 
 
+#### First run
+# npm install
+
 #### To start the server go in app root folder, open terminal, then type:
 # npm start
 

@@ -11,5 +11,3 @@ let loadFunkcija = function() {
 }
 
 window.onload = loadFunkcija;
-
-

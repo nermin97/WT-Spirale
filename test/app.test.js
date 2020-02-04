@@ -102,14 +102,17 @@ describe('/zauzeca',  () => {
     it('(GET) Should update an array of occupancy with new added one', (done) => {
         let sala = sale.filter(s => s.naziv == '1-15')[0];
         let osoba = osobe.filter(o => (o.ime == 'Drugi' && o.prezime == 'Neko' && o.uloga == 'asistent'))[0];
+        let danas =  new Date();
+        let danasnjiDan = (danas.getDate() < 10) ? '0' + danas.getDate() : danas.getDate();
+        let danasnjiMjesec = ((danas.getMonth() + 1) < 10) ? '0' + (danas.getMonth() + 1) : (danas.getMonth() + 1);
         chai.request(app).post('/zauzeca')
         .send({
             termin: {
-                redovni: true,
-                dan: (new Date().getDay() + 6) % 7,
-                datum: null,
-                semestar: 'zimski',
-                pocetak: '00:00',
+                redovni: false,
+                dan: null,
+                datum: danasnjiDan + '.' + danasnjiMjesec + '.' + danas.getFullYear(),
+                semestar: null,
+                pocetak: '06:00',
                 kraj: '23:59'
             },
             sala: sala,
@@ -132,7 +135,7 @@ describe('/zauzeca',  () => {
                 redovni: true,
                 dan: 0,
                 datum: null,
-                semestar: 'zimski',
+                semestar: 'ljetni',
                 pocetak: '14:00',
                 kraj: '15:00'
             },
@@ -140,8 +143,8 @@ describe('/zauzeca',  () => {
             osoba: osoba
         }).end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body.pocetak).to.equals('14:00');
-            expect(res.body.kraj).to.equals('15:00');
+            expect(res.body.pocetak.substring(0, 5)).to.equals('14:00');
+            expect(res.body.kraj.substring(0, 5)).to.equals('15:00');
             done();
         });
         
@@ -156,7 +159,7 @@ describe('/zauzeca',  () => {
                 redovni: true,
                 dan: 0,
                 datum: null,
-                semestar: 'zimski',
+                semestar: 'ljetni',
                 pocetak: '12:00',
                 kraj: '13:00'
             },
@@ -164,8 +167,8 @@ describe('/zauzeca',  () => {
             osoba: osoba
         }).end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body.pocetak).to.equals('12:00');
-            expect(res.body.kraj).to.equals('13:00');
+            expect(res.body.pocetak.substring(0, 5)).to.equals('12:00');
+            expect(res.body.kraj.substring(0, 5)).to.equals('13:00');
             done();
         });
         
